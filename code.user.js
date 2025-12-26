@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.24
+// @version      7.1.25
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -508,6 +508,9 @@
             calculatedPrice = calculatedPrice + getSettingWithDefault(SETTING_PRICE_OFFSET) * 100;
         }
 
+        if (currencyCode === 'UAH') {
+            calculatedPrice = Math.round(calculatedPrice / 100) * 100;
+        }
 
         // Keep our minimum and maximum in mind.
         calculatedPrice = clamp(calculatedPrice, minPriceBeforeFees, maxPriceBeforeFees);
