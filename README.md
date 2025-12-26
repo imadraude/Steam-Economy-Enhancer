@@ -34,7 +34,7 @@ This can be defined in Steam Economy Enhancer's settings, which you can find at 
 
 ### Download
 
-[Install Steam Economy Enhancer](https://raw.githubusercontent.com/Nuklon/Steam-Economy-Enhancer/master/code.user.js)
+[Install Steam Economy Enhancer](https://raw.githubusercontent.com/imadraude/Steam-Economy-Enhancer/master/code.user.js)
 
 *[Violentmonkey](https://violentmonkey.github.io/) is required to install.*
 
