@@ -3998,6 +3998,7 @@
 
     //#region Settings
     function openSettings() {
+        const step = currencyCode === 'UAH' ? '1' : '0.01';
         const price_options = $(`<div id="see_settings_modal">
             <div>
                 Calculate prices as the:&nbsp;
@@ -4013,7 +4014,7 @@
             </div>
             <div style="margin-top:6px;">
                 The value to add to the calculated price (minimum and maximum are respected):&nbsp;
-                <input type="number" step="0.01" id="${SETTING_PRICE_OFFSET}" value=${getSettingWithDefault(SETTING_PRICE_OFFSET)}>
+                <input type="number" step="${step}" id="${SETTING_PRICE_OFFSET}" value=${getSettingWithDefault(SETTING_PRICE_OFFSET)}>
             </div>
             <div style="margin-top:6px">
                 Use the second lowest sell listing when the lowest sell listing has a low quantity:&nbsp;
@@ -4021,11 +4022,11 @@
             </div>
             <div style="margin-top:6px;">
                 Don't check market listings with prices of and below:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_PRICE_MIN_CHECK_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_CHECK_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_PRICE_MIN_CHECK_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_CHECK_PRICE)}>
             </div>
             <div style="margin-top:6px;">
                 Don't list market listings with prices of and below:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_PRICE_MIN_LIST_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_LIST_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_PRICE_MIN_LIST_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_LIST_PRICE)}>
             </div>
             <div style="margin-top:24px">
                 Show price labels in inventory:&nbsp;
@@ -4041,23 +4042,23 @@
             </div>
             <div style="margin-top:24px;">
                 Minimum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MIN_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_NORMAL_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MIN_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_NORMAL_PRICE)}>
                 &nbsp;and maximum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MAX_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_NORMAL_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MAX_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_NORMAL_PRICE)}>
                 &nbsp;price for normal cards
             </div>
             <div style="margin-top:6px;">
                 Minimum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MIN_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_FOIL_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MIN_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_FOIL_PRICE)}>
                 &nbsp;and maximum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MAX_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_FOIL_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MAX_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_FOIL_PRICE)}>
                 &nbsp;price for foil cards
             </div>
             <div style="margin-top:6px;">
                 Minimum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MIN_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MIN_MISC_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MIN_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MIN_MISC_PRICE)}>
                 &nbsp;and maximum:&nbsp;
-                <input type="number" step="0.01" id="${SETTING_MAX_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MAX_MISC_PRICE)}>
+                <input type="number" step="${step}" id="${SETTING_MAX_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MAX_MISC_PRICE)}>
                 &nbsp;price for other items
             </div>
             <div style="margin-top:6px;">
@@ -4065,6 +4066,14 @@
                 <input id="${SETTING_RELIST_AUTOMATICALLY}" class="market_relist_auto" type="checkbox" ${getSettingWithDefault(SETTING_RELIST_AUTOMATICALLY) == 1 ? 'checked' : ''}>
             </div>
         </div>`);
+
+        if (currencyCode === 'UAH') {
+            price_options.find('input[type=number]').not(`#${SETTING_PRICE_HISTORY_HOURS}`).on('keydown', function(e) {
+                if (e.key === '.' || e.key === ',') {
+                    e.preventDefault();
+                }
+            });
+        }
 
         unsafeWindow.ShowConfirmDialog('Steam Economy Enhancer', price_options).done(() => {
             setSetting(SETTING_MIN_NORMAL_PRICE, $(`#${SETTING_MIN_NORMAL_PRICE}`, price_options).val());
