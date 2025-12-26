@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.23
+// @version      7.1.24
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -1283,6 +1283,8 @@
 
         publisherFee = publisherFee == null ? 0 : publisherFee;
 
+        const feeBase = parseInt(walletInfo['wallet_fee_base']) || 0;
+
         // IMPORTANT: Apply rounding/flooring BEFORE comparing with minimum fee.
         // Correct order per Steam's December 2025 rule changes:
         // 1. Calculate percentage fee (e.g., 0.05 * receivedAmount)
@@ -1290,7 +1292,7 @@
         // 3. Apply round/floor based on currency
         // 4. Compare with minimum fee and take maximum
         const nSteamFee = Math.max(
-            parseInt(roundFee(receivedAmount * parseFloat(walletInfo['wallet_fee_percent']) + parseInt(walletInfo['wallet_fee_base']))),
+            parseInt(roundFee(receivedAmount * parseFloat(walletInfo['wallet_fee_percent']) + feeBase)),
             minFee
         );
 
@@ -4068,7 +4070,7 @@
         </div>`);
 
         if (currencyCode === 'UAH') {
-            price_options.find('input[type=number]').not(`#${SETTING_PRICE_HISTORY_HOURS}`).on('keydown', function(e) {
+            price_options.find('input[type=number]').not(`#${SETTING_PRICE_HISTORY_HOURS}`).on('keydown', function (e) {
                 if (e.key === '.' || e.key === ',') {
                     e.preventDefault();
                 }
