@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.23
+// @version      7.1.24
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -1248,12 +1248,15 @@
         }
 
         publisherFee = publisherFee == null ? 0 : publisherFee;
+        const feeMinimum = parseInt(walletInfo['wallet_fee_minimum']) || 1;
+        const feeBase = parseInt(walletInfo['wallet_fee_base']) || 0;
+        
         const nSteamFee = parseInt(Math.floor(Math.max(
             receivedAmount * parseFloat(walletInfo['wallet_fee_percent']),
-            walletInfo['wallet_fee_minimum']
-        ) +
-            parseInt(walletInfo['wallet_fee_base'])));
-        const nPublisherFee = parseInt(Math.floor(publisherFee > 0 ? Math.max(receivedAmount * publisherFee, 1) : 0));
+            feeMinimum
+        ) + feeBase));
+        
+        const nPublisherFee = parseInt(Math.floor(publisherFee > 0 ? Math.max(receivedAmount * publisherFee, feeMinimum) : 0));
         const nAmountToSend = receivedAmount + nSteamFee + nPublisherFee;
         return {
             steam_fee: nSteamFee,
