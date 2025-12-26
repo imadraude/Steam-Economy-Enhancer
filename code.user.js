@@ -403,6 +403,11 @@
         maxPrice = maxPrice * 100.0;
         minPrice = minPrice * 100.0;
 
+        if (currencyCode === 'UAH') {
+            maxPrice = Math.round(maxPrice / 100) * 100;
+            minPrice = Math.round(minPrice / 100) * 100;
+        }
+
         const maxPriceBeforeFees = market.getPriceBeforeFees(maxPrice);
         const minPriceBeforeFees = market.getPriceBeforeFees(minPrice);
 
@@ -528,13 +533,21 @@
         // Keep our minimum and maximum in mind.
         calculatedPrice = clamp(calculatedPrice, minPriceBeforeFees, maxPriceBeforeFees);
 
-
         // In case there's a buy order higher than the calculated price.
         if (typeof histogram !== 'undefined' && histogram != null && histogram.highest_buy_order != null) {
             const buyOrderPrice = market.getPriceBeforeFees(histogram.highest_buy_order);
             if (buyOrderPrice > calculatedPrice) {
                 calculatedPrice = buyOrderPrice;
             }
+        }
+
+        if (currencyCode === 'UAH') {
+            let buyerPrice = market.getPriceIncludingFees(calculatedPrice);
+            buyerPrice = Math.round(buyerPrice / 100) * 100;
+            if (buyerPrice < 100 && calculatedPrice > 0) {
+                buyerPrice = 100;
+            }
+            calculatedPrice = market.getPriceBeforeFees(buyerPrice);
         }
 
         return calculatedPrice;
