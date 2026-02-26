@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.29
+// @version      7.1.30
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -1255,12 +1255,12 @@
         publisherFee = publisherFee == null ? 0 : publisherFee;
         const feeMinimum = parseInt(walletInfo['wallet_fee_minimum']) || 1;
         const feeBase = parseInt(walletInfo['wallet_fee_base']) || 0;
-        
+
         const nSteamFee = parseInt(Math.floor(Math.max(
             receivedAmount * parseFloat(walletInfo['wallet_fee_percent']),
             feeMinimum
         ) + feeBase));
-        
+
         const nPublisherFee = parseInt(Math.floor(publisherFee > 0 ? Math.max(receivedAmount * publisherFee, feeMinimum) : 0));
         const nAmountToSend = receivedAmount + nSteamFee + nPublisherFee;
         return {
@@ -1358,7 +1358,7 @@
                 const padLeft = `${padLeftZero(`${totalNumberOfProcessedQueueItems}`, digits)} / ${totalNumberOfQueuedItems}`;
 
                 if (getSettingWithDefault(SETTING_PRICE_MIN_LIST_PRICE) * 100 >= market.getPriceIncludingFees(task.sellPrice)) {
-                    logDOM(`${padLeft} - ${itemNameWithAmount} is not listed due to ignoring price settings.`);
+                    logDOM(`${padLeft} - ${itemNameWithAmount} не виставлено через налаштування ігнорування ціни.`);
                     $(`#${task.item.appid}_${task.item.contextid}_${itemId}`).css('background', COLOR_PRICE_NOT_CHECKED);
                     next();
                     return;
@@ -1374,7 +1374,7 @@
                         const callback = () => setTimeout(() => next(), getRandomInt(1000, 1500));
 
                         if (success) {
-                            logDOM(`${padLeft} - ${itemNameWithAmount} listed for ${formatPrice(market.getPriceIncludingFees(task.sellPrice) * task.item.amount)}, you will receive ${formatPrice(task.sellPrice * task.item.amount)}.`);
+                            logDOM(`${padLeft} - ${itemNameWithAmount} виставлено за ${formatPrice(market.getPriceIncludingFees(task.sellPrice) * task.item.amount)}, ви отримаєте ${formatPrice(task.sellPrice * task.item.amount)}.`);
                             $(`#${task.item.appid}_${task.item.contextid}_${itemId}`).css('background', COLOR_SUCCESS);
 
                             totalPriceWithoutFeesOnMarket += task.sellPrice * task.item.amount;
@@ -1387,7 +1387,7 @@
                         }
 
                         if (message && isRetryMessage(message)) {
-                            logDOM(`${padLeft} - ${itemNameWithAmount} retrying listing because: ${message.charAt(0).toLowerCase()}${message.slice(1)}`);
+                            logDOM(`${padLeft} - ${itemNameWithAmount} спроба виставити ще раз, тому що: ${message.charAt(0).toLowerCase()}${message.slice(1)}`);
 
                             totalNumberOfProcessedQueueItems--;
                             sellQueue.unshift(task);
@@ -1399,7 +1399,7 @@
                             return;
                         }
 
-                        logDOM(`${padLeft} - ${itemNameWithAmount} not added to market${message ? ` because:  ${message.charAt(0).toLowerCase()}${message.slice(1)}` : '.'}`);
+                        logDOM(`${padLeft} - ${itemNameWithAmount} не додано на ринок${message ? `, тому що:  ${message.charAt(0).toLowerCase()}${message.slice(1)}` : '.'}`);
                         $(`#${task.item.appid}_${task.item.contextid}_${itemId}`).css('background', COLOR_ERROR);
 
                         callback();
@@ -1414,7 +1414,7 @@
         });
 
         function sellAllItems() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1435,7 +1435,7 @@
         }
 
         function sellAllDuplicateItems() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1459,7 +1459,7 @@
         }
 
         function gemAllDuplicateItems() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1498,13 +1498,13 @@
                 if (numberOfQueuedItems > 0) {
                     totalNumberOfQueuedItems += numberOfQueuedItems;
 
-                    renderSpinner(`Processing ${numberOfQueuedItems} items`);
+                    renderSpinner(`Обробка ${numberOfQueuedItems} предметів`);
                 }
             });
         }
 
         function sellAllCards() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1525,7 +1525,7 @@
         }
 
         function sellAllCrates() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1583,7 +1583,7 @@
 
                     if (err != ERROR_SUCCESS) {
                         logConsole(`Failed to get gems value for ${itemName}`);
-                        logDOM(`${padLeft} - ${itemName} not turned into gems due to missing gems value.`);
+                        logDOM(`${padLeft} - ${itemName} не перетворено на самоцвіти через відсутність значення самоцвітів.`);
 
                         $(`#${item.appid}_${item.contextid}_${itemId}`).css('background', COLOR_ERROR);
                         return callback(false);
@@ -1596,7 +1596,7 @@
                         (err) => {
                             if (err != ERROR_SUCCESS) {
                                 logConsole(`Failed to turn item into gems for ${itemName}`);
-                                logDOM(`${padLeft} - ${itemName} not turned into gems due to unknown error.`);
+                                logDOM(`${padLeft} - ${itemName} не перетворено на самоцвіти через невідому помилку.`);
 
                                 $(`#${item.appid}_${item.contextid}_${itemId}`).css('background', COLOR_ERROR);
                                 return callback(false);
@@ -1605,7 +1605,7 @@
                             logConsole('============================');
                             logConsole(itemName);
                             logConsole(`Turned into ${goo.goo_value} gems`);
-                            logDOM(`${padLeft} - ${itemName} turned into ${item.goo_value_expected} gems.`);
+                            logDOM(`${padLeft} - ${itemName} перетворено на ${item.goo_value_expected} самоцвітів.`);
                             $(`#${item.appid}_${item.contextid}_${itemId}`).css('background', COLOR_SUCCESS);
 
                             totalScrap += item.goo_value_expected;
@@ -1658,13 +1658,13 @@
 
                     if (err != ERROR_SUCCESS) {
                         logConsole(`Failed to unpack booster pack ${itemName}`);
-                        logDOM(`${padLeft} - ${itemName} not unpacked.`);
+                        logDOM(`${padLeft} - ${itemName} не розпаковано.`);
 
                         $(`#${item.appid}_${item.contextid}_${itemId}`).css('background', COLOR_ERROR);
                         return callback(false);
                     }
 
-                    logDOM(`${padLeft} - ${itemName} unpacked.`);
+                    logDOM(`${padLeft} - ${itemName} розпаковано.`);
                     $(`#${item.appid}_${item.contextid}_${itemId}`).css('background', COLOR_SUCCESS);
 
                     callback(true);
@@ -1677,7 +1677,7 @@
         function turnSelectedItemsIntoGems() {
             const ids = getSelectedItems();
 
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1717,14 +1717,14 @@
                 if (numberOfQueuedItems > 0) {
                     totalNumberOfQueuedItems += numberOfQueuedItems;
 
-                    renderSpinner(`Processing ${numberOfQueuedItems} items`);
+                    renderSpinner(`Обробка ${numberOfQueuedItems} предметів`);
                 }
             });
         }
 
         // Unpacks all booster packs.
         function unpackAllBoosterPacks() {
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1756,7 +1756,7 @@
                 });
 
                 if (numberOfQueuedItems === 0) {
-                    logDOM('No booster packs found in the inventory to unpack.');
+                    logDOM('В інвентарі не знайдено наборів карток для розпакування.');
 
                     return;
                 }
@@ -1771,7 +1771,7 @@
         function unpackSelectedBoosterPacks() {
             const ids = getSelectedItems();
 
-            renderSpinner('Loading inventory items');
+            renderSpinner('Завантаження предметів інвентарю');
 
             loadAllInventories().then(() => {
                 removeSpinner();
@@ -1807,7 +1807,7 @@
                 if (numberOfQueuedItems > 0) {
                     totalNumberOfQueuedItems += numberOfQueuedItems;
 
-                    renderSpinner(`Processing ${numberOfQueuedItems} items`);
+                    renderSpinner(`Обробка ${numberOfQueuedItems} предметів`);
                 }
             });
         }
@@ -1867,7 +1867,7 @@
 
         function sellItems(items) {
             if (items.length == 0) {
-                logDOM('These items cannot be added to the market...');
+                logDOM('Ці предмети не можуть бути додані на ринок...');
 
                 return;
             }
@@ -2368,30 +2368,30 @@
             const TF2 = appId == 440;
 
             let buttonsHtml = `
-                <a class="btn_green_white_innerfade btn_medium_wide sell_all"><span>Sell All Items</span></a>
-                <a class="btn_green_white_innerfade btn_medium_wide sell_all_duplicates"><span>Sell All Duplicate Items</span></a>
-                <a class="btn_green_white_innerfade btn_medium_wide sell_selected" style="display:none"><span>Sell Selected Items</span></a>
-                <a class="btn_green_white_innerfade btn_medium_wide sell_manual" style="display:none"><span>Sell Manually</span></a>
+                <a class="btn_green_white_innerfade btn_medium_wide sell_all"><span>Продати всі</span></a>
+                <a class="btn_green_white_innerfade btn_medium_wide sell_all_duplicates"><span>Продати всі дублікати</span></a>
+                <a class="btn_green_white_innerfade btn_medium_wide sell_selected" style="display:none"><span>Продати вибрані предмети</span></a>
+                <a class="btn_green_white_innerfade btn_medium_wide sell_manual" style="display:none"><span>Продати вручну</span></a>
             `;
 
             if (showMiscOptions) {
                 buttonsHtml += `
-                    <a class="btn_green_white_innerfade btn_medium_wide sell_all_cards"><span>Sell All Cards</span></a>
+                    <a class="btn_green_white_innerfade btn_medium_wide sell_all_cards"><span>Продати всі картки</span></a>
                     <div class="see_inventory_buttons">
-                        <a class="btn_darkblue_white_innerfade btn_medium_wide turn_into_gems" style="display:none"><span>Turn Selected Items Into Gems</span></a>
-                        <a class="btn_darkblue_white_innerfade btn_medium_wide unpack_all_booster_packs"><span>Unpack All Booster Packs</span></a>
-                        <a class="btn_darkblue_white_innerfade btn_medium_wide unpack_selected_booster_packs" style="display:none"><span>Unpack Selected Booster Packs</span></a>
-                        <a class="btn_darkblue_white_innerfade btn_medium_wide gem_all_duplicates"><span>Turn All Duplicate Items Into Gems</span></a>
+                        <a class="btn_darkblue_white_innerfade btn_medium_wide turn_into_gems" style="display:none"><span>Перетворити вибрані на самоцвіти</span></a>
+                        <a class="btn_darkblue_white_innerfade btn_medium_wide unpack_all_booster_packs"><span>Розпакувати всі набори карток</span></a>
+                        <a class="btn_darkblue_white_innerfade btn_medium_wide unpack_selected_booster_packs" style="display:none"><span>Розпакувати вибрані набори карток</span></a>
+                        <a class="btn_darkblue_white_innerfade btn_medium_wide gem_all_duplicates"><span>Перетворити всі дублікати на самоцвіти</span></a>
                     </div>
                 `;
             } else if (TF2) {
-                buttonsHtml += '<a class="btn_green_white_innerfade btn_medium_wide sell_all_crates"><span>Sell All Crates</span></a>';
+                buttonsHtml += '<a class="btn_green_white_innerfade btn_medium_wide sell_all_crates"><span>Продати всі кейси</span></a>';
             }
 
             const sellButtons = $(`<div id="inventory_sell_buttons" class="see_inventory_buttons">${buttonsHtml}</div>`);
 
             const reloadButton =
-                $('<a id="inventory_reload_button" class="btn_darkblue_white_innerfade btn_medium_wide reload_inventory" style="margin-right:12px"><span>Reload Inventory</span></a>');
+                $('<a id="inventory_reload_button" class="btn_darkblue_white_innerfade btn_medium_wide reload_inventory" style="margin-right:12px"><span>Оновити інвентар</span></a>');
 
             const logo = $('#inventory_logos')[0];
             logo.style.height = 'auto';
@@ -3316,7 +3316,7 @@
                 $('.market_pagesize_options').hide();
 
                 // Show the spinner so the user knows that something is going on.
-                renderSpinner('Loading market listings');
+                renderSpinner('Завантаження лотів з ринку');
 
                 while (currentCount < totalCount) {
                     marketListingsItemsQueue.push(currentCount);
@@ -3377,7 +3377,7 @@
                 if ($('.market_select_item', selectionGroup).length == 0) { // If there are no items to select, keep it at Select all.
                     invert = false;
                 }
-                $('.select_all > span', selectionGroup).text(invert ? 'Deselect all' : 'Select all');
+                $('.select_all > span', selectionGroup).text(invert ? 'Скасувати вибір' : 'Вибрати всі');
             });
         }
 
@@ -3545,35 +3545,35 @@
             // Sell orders.
             $('.my_market_header').first().append(`<div class="market_listing_buttons">
                 <a class="item_market_action_button item_market_action_button_green select_all market_listing_button">
-                    <span class="item_market_action_button_contents">Select all</span>
+                    <span class="item_market_action_button_contents">Вибрати всі</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green select_five_from_page market_listing_button">
-                    <span class="item_market_action_button_contents">Select 5</span>
+                    <span class="item_market_action_button_contents">Вибрати 5</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green select_twentyfive_from_page market_listing_button">
-                    <span class="item_market_action_button_contents">Select 25</span>
+                    <span class="item_market_action_button_contents">Вибрати 25</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green remove_selected market_listing_button">
-                    <span class="item_market_action_button_contents">Remove selected</span>
+                    <span class="item_market_action_button_contents">Видалити вибрані</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green relist_selected market_listing_button" style="margin-left:auto">
-                    <span class="item_market_action_button_contents">Relist selected</span>
+                    <span class="item_market_action_button_contents">Перевиставити вибрані</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green relist_overpriced market_listing_button">
-                    <span class="item_market_action_button_contents">Relist overpriced</span>
+                    <span class="item_market_action_button_contents">Перевиставити завищені</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green select_overpriced market_listing_button">
-                    <span class="item_market_action_button_contents">Select overpriced</span>
+                    <span class="item_market_action_button_contents">Вибрати завищені</span>
                 </a>
             </div>`);
 
             // Listings confirmations and buy orders.
             $('.my_market_header').slice(1).append(`<div class="market_listing_buttons">
                 <a class="item_market_action_button item_market_action_button_green select_all market_listing_button">
-                    <span class="item_market_action_button_contents">Select all</span>
+                    <span class="item_market_action_button_contents">Вибрати всі</span>
                 </a>
                 <a class="item_market_action_button item_market_action_button_green remove_selected market_listing_button">
-                    <span class="item_market_action_button_contents">Remove selected</span>
+                    <span class="item_market_action_button_contents">Видалити вибрані</span>
                 </a>
             </div>`);
 
@@ -3839,13 +3839,13 @@
                 return a[1] - b[1];
             }).reverse();
 
-            let totalText = `<strong>Number of unique items: ${sortable.length}, worth ${formatPrice(totalPrice)}<br/><br/></strong>`;
+            let totalText = `<strong>Унікальних предметів: ${sortable.length}, вартість ${formatPrice(totalPrice)}<br/><br/></strong>`;
             let totalNumOfItems = 0;
             for (let i = 0; i < sortable.length; i++) {
                 totalText += `${sortable[i][1]}x ${sortable[i][0]}<br/>`;
                 totalNumOfItems += sortable[i][1];
             }
-            totalText += `<br/><strong>Total items: ${totalNumOfItems}</strong><br/>`;
+            totalText += `<br/><strong>Усього предметів: ${totalNumOfItems}</strong><br/>`;
 
             return totalText;
         }
@@ -3928,7 +3928,7 @@
         const appendSelectPageButton = () => {
             $('#inventory_displaycontrols').append(`<div class="trade_offer_buttons">
               <a class="item_market_action_button item_market_action_button_green select_all">
-                  <span class="item_market_action_button_contents" style="text-transform:none">Select all from page</span>
+                  <span class="item_market_action_button_contents" style="text-transform:none">Вибрати все на сторінці</span>
               </a>
           </div>`);
 
@@ -3964,74 +3964,74 @@
         const step = currencyCode === 'UAH' ? '1' : '0.01';
         const price_options = $(`<div id="see_settings_modal">
             <div>
-                Calculate prices as the:&nbsp;
+                Розраховувати ціни як:&nbsp;
                 <select id="${SETTING_PRICE_ALGORITHM}">
-                    <option value="1"${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 1 ? 'selected="selected"' : ''}>Maximum of the average history and lowest sell listing</option>
-                    <option value="2" ${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 2 ? 'selected="selected"' : ''}>Lowest sell listing</option>
-                    <option value="3" ${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 3 ? 'selected="selected"' : ''}>Highest current buy order or lowest sell listing</option>
+                    <option value="1"${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 1 ? 'selected="selected"' : ''}>Максимум між середньою історією і найнижчою ціною продажу</option>
+                    <option value="2" ${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 2 ? 'selected="selected"' : ''}>Найнижча ціна продажу</option>
+                    <option value="3" ${getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 3 ? 'selected="selected"' : ''}>Найвище замовлення на покупку або найнижча ціна продажу</option>
                 </select>
             </div>
             <div style="margin-top:6px;">
-                Hours to use for the average history calculated price:&nbsp;
+                Кількість годин для розрахунку середньої ціни з історії:&nbsp;
                 <input type="number" min="0" step="2" id="${SETTING_PRICE_HISTORY_HOURS}" value=${getSettingWithDefault(SETTING_PRICE_HISTORY_HOURS)}>
             </div>
             <div style="margin-top:6px;">
-                The value to add to the calculated price (minimum and maximum are respected):&nbsp;
+                Значення для додавання до розрахованої ціни (мінімум і максимум враховуються):&nbsp;
                 <input type="number" step="${step}" id="${SETTING_PRICE_OFFSET}" value=${getSettingWithDefault(SETTING_PRICE_OFFSET)}>
             </div>
             <div style="margin-top:6px">
-                Use the second lowest sell listing when the lowest sell listing has a low quantity:&nbsp;
+                Використовувати другу найнижчу ціну продажу, якщо найнижча має малу кількість:&nbsp;
                 <input type="checkbox" id="${SETTING_PRICE_IGNORE_LOWEST_Q}" ${getSettingWithDefault(SETTING_PRICE_IGNORE_LOWEST_Q) == 1 ? 'checked' : ''}>
             </div>
             <div style="margin-top:6px;">
-                Don't check market listings with prices of and below:&nbsp;
+                Не перевіряти лоти на ринку з цінами від і нижче:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_PRICE_MIN_CHECK_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_CHECK_PRICE)}>
             </div>
             <div style="margin-top:6px;">
-                Don't list market listings with prices of and below:&nbsp;
+                Не виставляти лоти на ринок з цінами від і нижче:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_PRICE_MIN_LIST_PRICE}" value=${getSettingWithDefault(SETTING_PRICE_MIN_LIST_PRICE)}>
             </div>
             <div style="margin-top:24px">
-                Show price labels in inventory:&nbsp;
+                Показувати мітки цін в інвентарі:&nbsp;
                 <input type="checkbox" id="${SETTING_INVENTORY_PRICE_LABELS}" ${getSettingWithDefault(SETTING_INVENTORY_PRICE_LABELS) == 1 ? 'checked' : ''}>
             </div>
             <div style="margin-top:6px">
-                Show price labels in trade offers:&nbsp;
+                Показувати мітки цін у пропозиціях обміну:&nbsp;
                 <input type="checkbox" id="${SETTING_TRADEOFFER_PRICE_LABELS}" ${getSettingWithDefault(SETTING_TRADEOFFER_PRICE_LABELS) == 1 ? 'checked' : ''}>
             </div>
             <div style="margin-top:6px">
-                Show quick sell info and buttons:&nbsp;
+                Показувати інформацію та кнопки для швидкого продажу:&nbsp;
                 <input type="checkbox" id="${SETTING_QUICK_SELL_BUTTONS}" ${getSettingWithDefault(SETTING_QUICK_SELL_BUTTONS) == 1 ? 'checked' : ''}>
             </div>
             <div style="margin-top:24px;">
-                Minimum:&nbsp;
+                Мінімальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MIN_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_NORMAL_PRICE)}>
-                &nbsp;and maximum:&nbsp;
+                &nbsp;і максимальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MAX_NORMAL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_NORMAL_PRICE)}>
-                &nbsp;price for normal cards
+                &nbsp;ціна для звичайних карток
             </div>
             <div style="margin-top:6px;">
-                Minimum:&nbsp;
+                Мінімальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MIN_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MIN_FOIL_PRICE)}>
-                &nbsp;and maximum:&nbsp;
+                &nbsp;і максимальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MAX_FOIL_PRICE}" value=${getSettingWithDefault(SETTING_MAX_FOIL_PRICE)}>
-                &nbsp;price for foil cards
+                &nbsp;ціна для металевих карток
             </div>
             <div style="margin-top:6px;">
-                Minimum:&nbsp;
+                Мінімальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MIN_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MIN_MISC_PRICE)}>
-                &nbsp;and maximum:&nbsp;
+                &nbsp;і максимальна:&nbsp;
                 <input type="number" step="${step}" id="${SETTING_MAX_MISC_PRICE}" value=${getSettingWithDefault(SETTING_MAX_MISC_PRICE)}>
-                &nbsp;price for other items
+                &nbsp;ціна для інших предметів
             </div>
             <div style="margin-top:6px;">
-                Automatically relist overpriced market listings (slow on large inventories):&nbsp;
+                Автоматично перевиставляти завищені лоти на ринку (повільно для великих інвентарів):&nbsp;
                 <input id="${SETTING_RELIST_AUTOMATICALLY}" class="market_relist_auto" type="checkbox" ${getSettingWithDefault(SETTING_RELIST_AUTOMATICALLY) == 1 ? 'checked' : ''}>
             </div>
         </div>`);
 
         if (currencyCode === 'UAH') {
-            price_options.find('input[type=number]').not(`#${SETTING_PRICE_HISTORY_HOURS}`).on('keydown', function(e) {
+            price_options.find('input[type=number]').not(`#${SETTING_PRICE_HISTORY_HOURS}`).on('keydown', function (e) {
                 if (e.key === '.' || e.key === ',') {
                     e.preventDefault();
                 }
