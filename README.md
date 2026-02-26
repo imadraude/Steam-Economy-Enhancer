@@ -1,66 +1,51 @@
-# <img src="assets/icon.svg" width="32" align="center"> Steam Economy Enhancer
+# <img src="assets/icon.svg" width="32" align="center"> Steam Economy Enhancer (UA Fork)
 
-A free userscript to enhance your Steam Inventory, Steam Market and Steam Tradeoffers.
+Це форк популярного скрипта, оптимізований для українського маркету Steam. Оригінальний розробник: **[Nuklon](https://github.com/nuklon)**.
 
-It adds the following features to the Steam Market:
+Безкоштовне розширення (userscript) для покращення роботи з інвентарем, торговим майданчиком та обмінами у Steam.
 
-*    Detect overpriced and underpriced items.
-*    Select 5/25/all (overpriced) items and remove them at once.
-*    (Automatically) relist overpriced items.
-*    Sort and search items by name, price or date.
-*    Total price for listings, as seller and buyer.
+### Основні можливості
 
-It adds the following features to the Steam Inventory:
+**Торговий майданчик (Market):**
+*   Автоматичне виявлення та перереєстрація лотів за вигіднішими цінами.
+*   Групове видалення лотів та швидкий пошук/сортування за назвою чи ціною.
+*   Розрахунок загальної вартості виставлених предметів для продавця та покупця.
 
-*    Sell all (selected) items or trading cards automatically.
-*    Select multiple items simultaneously with *Shift* or *Ctrl*.
-*    Market sell and buy listings added to the item details.
-*    Quick sell buttons to sell an item without confirmations.
-*    Shows the lowest listed price for each item.
-*    Turn selected items into gems.
-*    Unpack selected booster packs.
+**Інвентар (Inventory):**
+*   Автоматичний продаж обраних категорій предметів (наприклад, колекційних карток).
+*   Кнопки швидкого продажу (Quick sell) без додаткових підтверджень.
+*   Зручне виділення декількох предметів через *Shift* або *Ctrl*.
+*   Масове перетворення предметів на самоцвіти та розпакування наборів карток.
 
-It adds the following features to the Steam Tradeoffers:
+**Пропозиції обміну (Trade offers):**
+*   Детальна статистика: загальна кількість предметів, кількість унікальних одиниць та їх детальний розподіл.
+*   Швидке виділення всіх предметів на поточній сторінці.
+*   Відображення актуальних цін з торгового майданчика безпосередньо у вікні обміну.
 
-*    A summary of all items from both parties that includes total number of items, number of unique items and item count breakdown (how many of each item there are)
-*    Select all items of the current page.
-*    Shows the lowest listed price for each inventory item.
-
-The pricing can be based on the lowest listed price, the price history and your own minimum and maximum prices.
-This can be defined in Steam Economy Enhancer's settings, which you can find at the top of the page near the *Install Steam* button.
+Ціноутворення базується на мінімальній ціні ринку, історії продажів та ваших персональних налаштуваннях, які можна змінити у верхній частині сторінки Steam (біля кнопки «Встановити Steam»).
 
 > [!NOTE]  
-> It is free but there is **NO** support. If you want to add functionality, feel free to submit a PR.
+> Проект є безкоштовним та надається "як є" без гарантованої підтримки. Пропозиції щодо покращення (Pull Requests) вітаються.
 
-### Download
+### Встановлення
 
-[Install Steam Economy Enhancer](https://raw.githubusercontent.com/imadraude/Steam-Economy-Enhancer/master/code.user.js)
+1.  Встановіть розширення **[Violentmonkey](https://violentmonkey.github.io/)** (або аналог).
+2.  **[Встановити Steam Economy Enhancer](https://raw.githubusercontent.com/imadraude/Steam-Economy-Enhancer/master/code.user.js)**
 
-*[Violentmonkey](https://violentmonkey.github.io/) is required to install.*
+### Скріншоти
 
-### Screenshots
-
-
-*Market*
-
+*Ринок*
 ![Market](assets/market.png)
 
-
-*Inventory*
-
+*Інвентар*
 ![Inventory](assets/inventory.png)
 
-
-*Options*
-
+*Налаштування*
 ![Options](assets/settings.png)
 
-
-*Trade offers*
-
+*Обміни*
 ![Tradeoffers](assets/tradeoffer.png)
 
-
-### License
+### Ліцензія
 
 [MIT](LICENSE)
