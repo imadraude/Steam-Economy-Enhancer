@@ -1383,10 +1383,10 @@
             totals.innerHTML = '';
 
             if (totalPriceWithFeesOnMarket > 0) {
-                totals.innerHTML += `<div><strong>Total listed for ${formatPrice(totalPriceWithFeesOnMarket)}, you will receive ${formatPrice(totalPriceWithoutFeesOnMarket)}.</strong></div>`;
+                totals.innerHTML += `<div><strong>Разом виставлено за ${formatPrice(totalPriceWithFeesOnMarket)}, ви отримаєте ${formatPrice(totalPriceWithoutFeesOnMarket)}.</strong></div>`;
             }
             if (totalScrap > 0) {
-                totals.innerHTML += `<div><strong>Total scrap ${totalScrap}.</strong></div>`;
+                totals.innerHTML += `<div><strong>Всього металобрухту: ${totalScrap}.</strong></div>`;
             }
         }
 
@@ -1806,7 +1806,7 @@
 
                 totalNumberOfQueuedItems += numberOfQueuedItems;
 
-                renderSpinner(`Processing ${numberOfQueuedItems} items`);
+                renderSpinner(`Обробка ${numberOfQueuedItems} предметів`);
             });
         }
 
@@ -1932,7 +1932,7 @@
             if (numberOfQueuedItems > 0) {
                 totalNumberOfQueuedItems += numberOfQueuedItems;
 
-                renderSpinner(`Processing ${numberOfQueuedItems} items`);
+                renderSpinner(`Обробка ${numberOfQueuedItems} предметів`);
             }
         }
 
@@ -2190,39 +2190,39 @@
                     $('.sell_selected').show();
                     if (canSellSelectedItemsManually(items)) {
                         $('.sell_manual').show();
-                        $('.sell_manual > span').text(`Sell ${selectedItems}${selectedItems == 1 ? ' Item Manual' : ' Items Manual'}`);
-                    } else {
-                        $('.sell_manual').hide();
-                    }
-                    $('.sell_selected > span').text(`Sell ${selectedItems}${selectedItems == 1 ? ' Item' : ' Items'}`);
-                }
-            });
+                        $('.sell_manual > span').text(`Продати вручну (${selectedItems})`);
+            } else {
+                $('.sell_manual').hide();
+            }
+            $('.sell_selected > span').text(`Продати вибрані (${selectedItems})`);
         }
+    });
+}
 
-        // Updates the (selected) turn into ... gems button.
-        function updateTurnIntoGemsButton() {
-            getInventorySelectedGemsItems((items) => {
-                const selectedItems = items.length;
-                if (items.length == 0) {
-                    $('.turn_into_gems').hide();
-                } else {
-                    $('.turn_into_gems').show();
-                    $('.turn_into_gems > span').
-                        text(`Turn ${selectedItems}${selectedItems == 1 ? ' Item Into Gems' : ' Items Into Gems'}`);
-                }
-            });
+// Updates the (selected) turn into ... gems button.
+function updateTurnIntoGemsButton() {
+    getInventorySelectedGemsItems((items) => {
+        const selectedItems = items.length;
+        if (items.length == 0) {
+            $('.turn_into_gems').hide();
+        } else {
+            $('.turn_into_gems').show();
+            $('.turn_into_gems > span').
+                text(`Перетворити на самоцвіти (${selectedItems})`);
         }
+    });
+}
 
-        // Updates the (selected) open ... booster packs button.
-        function updateOpenBoosterPacksButton() {
-            getInventorySelectedBoosterPackItems((items) => {
-                const selectedItems = items.length;
-                if (items.length == 0) {
-                    $('.unpack_selected_booster_packs').hide();
-                } else {
-                    $('.unpack_selected_booster_packs').show();
-                    $('.unpack_selected_booster_packs > span').
-                        text(`Unpack ${selectedItems}${selectedItems == 1 ? ' Booster Pack' : ' Booster Packs'}`);
+// Updates the (selected) open ... booster packs button.
+function updateOpenBoosterPacksButton() {
+    getInventorySelectedBoosterPackItems((items) => {
+        const selectedItems = items.length;
+        if (items.length == 0) {
+            $('.unpack_selected_booster_packs').hide();
+        } else {
+            $('.unpack_selected_booster_packs').show();
+            $('.unpack_selected_booster_packs > span').
+                text(`Розпакувати набори (${selectedItems})`);
                 }
             });
         }
@@ -2310,11 +2310,11 @@
 
                     const groupMain = $(`<div id="listings_group">
                         <div>
-                            <div id="listings_sell">Sell</div>
+                            <div id="listings_sell">Продаж</div>
                             ${histogram.sell_order_table}
                         </div>
                         <div>
-                            <div id="listings_buy">Buy</div>
+                            <div id="listings_buy">Купівля</div>
                             ${histogram.buy_order_table}
                         </div>
                     </div>`);
@@ -2355,7 +2355,7 @@
                         <input id="quick_sell_input" style="background-color: black;color: white;border: transparent;max-width:65px;text-align:center;" type="number" value="${histogram.lowest_sell_order / 100}" step="0.01" />&nbsp;
                         <a class="item_market_action_button item_market_action_button_green quick_sell_custom">
                             <span class="item_market_action_button_edge item_market_action_button_left"></span>
-                            <span class="item_market_action_button_contents">➜ Sell</span>
+                            <span class="item_market_action_button_contents">➜ Продати</span>
                             <span class="item_market_action_button_edge item_market_action_button_right"></span>
                             <span class="item_market_action_button_preload"></span>
                         </a>
@@ -2812,7 +2812,7 @@
                             $(
                                 '.market_table_value > span:nth-child(1) > span:nth-child(1) > span:nth-child(1)',
                                 listingUI
-                            ).append(` ➤ <span title="This is likely the highest buy order price.">${highestBuyOrderPrice
+                            ).append(` ➤ <span title="Це, ймовірно, найвища ціна запиту на купівлю.">${highestBuyOrderPrice
                                 }</span>`);
 
                             logConsole('============================');
@@ -2847,7 +2847,7 @@
 
                             $('.market_listing_my_price', listingUI).last().prop(
                                 'title',
-                                `The best price is ${formatPrice(sellPriceWithoutOffsetWithFees)}.`
+                                `Найкраща ціна: ${formatPrice(sellPriceWithoutOffsetWithFees)}.`
                             );
 
                             if (sellPriceWithoutOffsetWithFees < price) {
@@ -3291,7 +3291,7 @@
             market_listing_see.addClass('list');
 
             $('.market_listing_table_header', market_listing_see.parent()).
-                append('<input class="search" id="market_name_search" placeholder="Search..." />');
+                append('<input class="search" id="market_name_search" placeholder="Пошук..." />');
 
             const options = {
                 valueNames: [
@@ -3860,7 +3860,7 @@
                         text += ` (${rgItem.type})`;
                     }
                 } else {
-                    text = 'Unknown Item';
+                    text = 'Невідомий предмет';
                 }
 
                 if (text in total) {
