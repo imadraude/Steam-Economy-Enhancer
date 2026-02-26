@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.33
+// @version      7.1.34
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -426,7 +426,7 @@
     }
 
     // Calculates the average history price, before the fee.
-    function calculateAverageHistoryPriceBeforeFees(history) {
+    function calculateAverageHistoryPriceBeforeFees(history, item) {
         let highest = 0;
         let total = 0;
 
@@ -448,11 +448,11 @@
         }
 
         highest = Math.floor(highest / total);
-        return market.getPriceBeforeFees(highest);
+        return market.getPriceBeforeFees(highest, item);
     }
 
     // Calculates the listing price, before the fee.
-    function calculateListingPriceBeforeFees(histogram) {
+    function calculateListingPriceBeforeFees(histogram, item) {
         if (typeof histogram === 'undefined' ||
             histogram == null ||
             histogram.lowest_sell_order == null ||
@@ -460,12 +460,12 @@
             return 0;
         }
 
-        let listingPrice = market.getPriceBeforeFees(histogram.lowest_sell_order);
+        let listingPrice = market.getPriceBeforeFees(histogram.lowest_sell_order, item);
 
         const shouldIgnoreLowestListingOnLowQuantity = getSettingWithDefault(SETTING_PRICE_IGNORE_LOWEST_Q) == 1;
 
         if (shouldIgnoreLowestListingOnLowQuantity && histogram.sell_order_graph.length >= 2) {
-            const listingPrice2ndLowest = market.getPriceBeforeFees(histogram.sell_order_graph[1][0] * 100);
+            const listingPrice2ndLowest = market.getPriceBeforeFees(histogram.sell_order_graph[1][0] * 100, item);
 
             if (listingPrice2ndLowest > listingPrice) {
                 const numberOfListingsLowest = histogram.sell_order_graph[0][1];
@@ -493,20 +493,20 @@
         return listingPrice;
     }
 
-    function calculateBuyOrderPriceBeforeFees(histogram) {
+    function calculateBuyOrderPriceBeforeFees(histogram, item) {
         if (typeof histogram === 'undefined') {
             return 0;
         }
 
-        return market.getPriceBeforeFees(histogram.highest_buy_order);
+        return market.getPriceBeforeFees(histogram.highest_buy_order, item);
     }
 
     // Calculate the sell price based on the history and listings.
     // applyOffset specifies whether the price offset should be applied when the listings are used to determine the price.
-    function calculateSellPriceBeforeFees(history, histogram, applyOffset, minPriceBeforeFees, maxPriceBeforeFees) {
-        const historyPrice = calculateAverageHistoryPriceBeforeFees(history);
-        const listingPrice = calculateListingPriceBeforeFees(histogram);
-        const buyPrice = calculateBuyOrderPriceBeforeFees(histogram);
+    function calculateSellPriceBeforeFees(history, histogram, applyOffset, minPriceBeforeFees, maxPriceBeforeFees, item) {
+        const historyPrice = calculateAverageHistoryPriceBeforeFees(history, item);
+        const listingPrice = calculateListingPriceBeforeFees(histogram, item);
+        const buyPrice = calculateBuyOrderPriceBeforeFees(histogram, item);
 
         const shouldUseAverage = getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 1;
         const shouldUseBuyOrder = getSettingWithDefault(SETTING_PRICE_ALGORITHM) == 3;
