@@ -4,7 +4,7 @@
 // @namespace    https://github.com/imadraude
 // @author       imadraude
 // @license      MIT
-// @version      7.1.32
+// @version      7.1.33
 // @description  Enhances the Steam Inventory and Steam Market.
 // @match        https://steamcommunity.com/id/*/inventory*
 // @match        https://steamcommunity.com/profiles/*/inventory*
@@ -2400,6 +2400,7 @@ function updateOpenBoosterPacksButton() {
             $('#inventory_sell_buttons').remove();
             $('#see_settings_modal').remove();
             $('#inventory_reload_button').remove();
+            $('#inventory_market_button').remove();
 
             $('#see_settings').remove();
             $('#global_action_menu').
@@ -2435,6 +2436,8 @@ function updateOpenBoosterPacksButton() {
 
             const reloadButton =
                 $('<a id="inventory_reload_button" class="btn_darkblue_white_innerfade btn_medium_wide reload_inventory" style="margin-right:12px"><span>Оновити інвентар</span></a>');
+            const marketButton =
+                $('<a id="inventory_market_button" class="btn_darkblue_white_innerfade btn_medium_wide" style="margin-right:12px" href="https://steamcommunity.com/market/"><span>Перейти до ринку</span></a>');
 
             const logo = $('#inventory_logos')[0];
             logo.style.height = 'auto';
@@ -2478,6 +2481,7 @@ function updateOpenBoosterPacksButton() {
 
             }
 
+            $('.inventory_rightnav').prepend(marketButton);
             $('.inventory_rightnav').prepend(reloadButton);
             $('.reload_inventory').on(
                 'click',
