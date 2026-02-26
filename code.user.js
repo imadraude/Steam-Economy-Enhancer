@@ -406,6 +406,12 @@
         if (currencyCode === 'UAH') {
             maxPrice = Math.round(maxPrice / 100) * 100;
             minPrice = Math.round(minPrice / 100) * 100;
+            if (minPrice < 300) {
+                minPrice = 300;
+            }
+            if (maxPrice < 300) {
+                maxPrice = 300;
+            }
         }
 
         const maxPriceBeforeFees = market.getPriceBeforeFees(maxPrice);
@@ -529,10 +535,6 @@
             calculatedPrice = calculatedPrice + getSettingWithDefault(SETTING_PRICE_OFFSET) * 100;
         }
 
-        if (currencyCode === 'UAH') {
-            calculatedPrice = Math.round(calculatedPrice / 100) * 100;
-        }
-
         // Keep our minimum and maximum in mind.
         calculatedPrice = clamp(calculatedPrice, minPriceBeforeFees, maxPriceBeforeFees);
 
@@ -547,8 +549,8 @@
         if (currencyCode === 'UAH') {
             let buyerPrice = market.getPriceIncludingFees(calculatedPrice);
             buyerPrice = Math.round(buyerPrice / 100) * 100;
-            if (buyerPrice < 100 && calculatedPrice > 0) {
-                buyerPrice = 100;
+            if (buyerPrice < 300 && calculatedPrice > 0) {
+                buyerPrice = 300;
             }
             calculatedPrice = market.getPriceBeforeFees(buyerPrice);
         }
